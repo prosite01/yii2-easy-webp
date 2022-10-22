@@ -6,16 +6,6 @@ use Yii;
 
 class Get
 {
-    /**
-	 * @var string Path of thumbnail cache directory; it can contain Yii aliases such as `@webroot` or `@app`
-	 */
-	public static $cachePathAlias = '@webroot/assets/thumbnails';
-
-	/**
-	 * @var string URL of thumbnail cache directory; it can contain Yii aliases such as `@web`
-	 */
-	public static $cacheUrlAlias = '@web/assets/thumbnails';
-
     public function files($img)
     {
         $imgFullPath = Yii::getAlias('@webroot') . $img;
@@ -38,8 +28,6 @@ class Get
         if (file_exists($webpPath)) {
             $this->returnPaths($img, true);
         }
-
-
     }
 
     private function returnPaths($img, $webp = false)
