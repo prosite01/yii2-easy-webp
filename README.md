@@ -11,13 +11,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist prosite01/yii2-easy-webp "*"
+composer require --prefer-dist prosite01/yii2-easy-webp "dev-master"
 ```
 
 or add
 
 ```
-"prosite01/yii2-easy-webp": "*"
+"prosite01/yii2-easy-webp": "dev-master"
 ```
 
 to the require section of your `composer.json` file.
@@ -28,5 +28,5 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \prosite\EasyWebp\Img::widget(); ?>```
+<?= \prosite\EasyWebp\Img::widget(); ?>
 ```
