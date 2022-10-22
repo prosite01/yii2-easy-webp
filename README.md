@@ -28,5 +28,5 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \prosite\EasyWebp\Img::widget(); ?>
+<?= \prosite\EasyWebp\Img::widget(['src' => '/img/portfolio/image.png', 'options' => ['alt' => 'Example Image']]); ?>
 ```
