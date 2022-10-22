@@ -6,8 +6,9 @@ use Yii;
 
 class Get
 {
-    public function files($img)
+    public static function files($img)
     {
+        $webpFile = null;
         $imgFullPath = Yii::getAlias('@webroot') . $img;
 
         if (file_exists($imgFullPath) === false) {
@@ -26,11 +27,13 @@ class Get
 		$webpPath = $fileInfo['dirname']  . '/' . $webpFileName;
 
         if (file_exists($webpPath)) {
-            $this->returnPaths($img, true);
+            $webpFile = $webpPath;
         }
+
+        return static::returnPathsArray($img, $webpFile);
     }
 
-    private function returnPaths($img, $webp = false)
+    private static function returnPathsArray($img, $webp = false)
     {
         $imgPath = pathinfo($img);
 
