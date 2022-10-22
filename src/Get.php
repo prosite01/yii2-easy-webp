@@ -4,63 +4,77 @@ namespace prosite\EasyWebp;
 
 use Yii;
 
+/**
+ * Get only the paths to the webp file.
+ * Example:
+ * 
+ * ```php
+ * return \prosite\EasyWebp\Get::webp('/img/portfolio/image.png');
+ * ```
+ * 
+ * This code will return the following string: /img/portfolio/image.webp
+ * 
+ */
 class Get
-{
-    public static function files($img)
+{    
+    /**
+     * Generate and get path to the webp file
+     * @param  string $img
+     * @return string|null
+     */
+    public static function webp($img)
     {
         $imgFullPath = Yii::getAlias('@webroot') . $img;
 
         if (file_exists($imgFullPath) === false) {
-            return false;
+            return null;
         }
         
 		$fileSize = filesize($imgFullPath);
 		if ($fileSize === 0) {
-			return false;
+			return null;
 		}
 
 		$fileInfo = pathinfo($imgFullPath);
 		$extension = strtolower($fileInfo['extension']);
         if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
-            return static::returnPathsArray($img, false);
+            return null;
         }
 
         $webpFileName = $fileInfo['filename'] . '.webp';
 		$webpFullPath = $fileInfo['dirname']  . '/' . $webpFileName;
         if (file_exists($webpFullPath)) {
-            return static::returnPathsArray($img, true);
+            return static::returnWebpPath($img);
         }
 
+        $alpha = false;
         switch ($extension) {
             case 'jpg':
             case 'jpeg':
                 $tmpImg = imagecreatefromjpeg($imgFullPath);
-                imagepalettetotruecolor($tmpImg);
-                imagealphablending($tmpImg, true);
-                imagesavealpha($tmpImg, true);
-                imagewebp($tmpImg, $webpFullPath, 80);
-                imagedestroy($tmpImg);
                 break;
             case 'png':
                 $tmpImg = imagecreatefrompng($imgFullPath);
-                imagepalettetotruecolor($tmpImg);
-                imagealphablending($tmpImg, true);
-                imagesavealpha($tmpImg, true);
-                imagewebp($tmpImg, $webpFullPath, 80);
-                imagedestroy($tmpImg);
+                $alpha = true;
                 break;
         }
+        if ($alpha) {
+            imagepalettetotruecolor($tmpImg);
+            imagealphablending($tmpImg, true);
+            imagesavealpha($tmpImg, true);
+        }
+        imagewebp($tmpImg, $webpFullPath, 80);
+        imagedestroy($tmpImg);
 
-        return static::returnPathsArray($img, true);
+        if (filesize($webpFullPath) >= $fileSize) {
+            return null;
+        }
+        return static::returnWebpPath($img);
     }
 
-    private static function returnPathsArray($img, $withWebp = false)
+    private static function returnWebpPath($img)
     {
         $imgPath = pathinfo($img);
-
-        return [
-            'original' => $img,
-            'webp' => ($withWebp == true) ? $imgPath['dirname']  . '/' . $imgPath['filename'] . '.webp' : null
-        ];
+        return $imgPath['dirname']  . '/' . $imgPath['filename'] . '.webp';
     }
 }

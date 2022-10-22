@@ -21,21 +21,6 @@ use yii\helpers\Html;
  *     <img src='/img/portfolio/image.png' alt='Example Image'>
  * </picture>
  * ```
- * 
- * If you want to get only the paths to the original file and webp, then use the Get method.
- * Example:
- * 
- * ```php
- * return \prosite\EasyWebp\Get::files('/img/portfolio/image.png');
- * ```
- * 
- * This code will return the following array:
- * 
- *  [
- *      original => /img/portfolio/image.png,
- *      webp => /img/portfolio/image.webp
- *  ]
- * 
  */
 class Img extends \yii\base\Widget
 {
@@ -52,20 +37,20 @@ class Img extends \yii\base\Widget
 	/**
 	 * @var array files path to return  
 	 */
-	private $_files;
+	private $_webp;
 
 	public function init()
 	{
 		parent::init();
 
-		$this->_files = Get::files($this->src);
+		$this->_webp = Get::webp($this->src);
 	}
 
     public function run()
     {
         $return  = Html::beginTag('picture');
-		if (!empty($this->_files['webp'])) {
-            $return .= Html::tag('source', [], ['srcset' => $this->_files['webp'], 'type' => 'image/webp']);
+		if (!empty($this->_webp)) {
+            $return .= Html::tag('source', [], ['srcset' => $this->_webp, 'type' => 'image/webp']);
 		}
         $return .= Html::img($this->src, $this->options);
         $return .= Html::endTag('picture');
