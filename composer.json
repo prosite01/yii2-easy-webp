@@ -2,7 +2,10 @@
     "name": "prosite01/yii2-easy-webp",
     "description": "The converter allows one line to display the html tag <picture> containing the source file and webp",
     "type": "yii2-extension",
-    "keywords": ["yii2","extension"],
+    "keywords": [
+        "yii2",
+        "extension"
+    ],
     "license": "Apache-2.0",
     "authors": [
         {
@@ -10,9 +13,7 @@
             "email": "admin@rat.kz"
         }
     ],
-	"minimum-stability": "dev",
-	"require": {
-		"yiisoft/yii2-imagine": "~2.2.0",
+    "require": {
         "yiisoft/yii2": "~2.0.0"
     },
     "autoload": {
