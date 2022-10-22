@@ -63,15 +63,11 @@ class Img extends \yii\base\Widget
 
     public function run()
     {
-        $files = $this->_files;
-        
-		$originalImg = Html::img($this->src, $this->options);
-        
         $return  = Html::beginTag('picture');
-		if (!empty($files['webp'])) {
-            $return .= Html::tag("source", [], ["srcset" => $files['webp'], "type" => "image/webp"]);
+		if (!empty($this->_files['webp'])) {
+            $return .= Html::tag('source', [], ['srcset' => $this->_files['webp'], 'type' => 'image/webp']);
 		}
-        $return .= $originalImg;
+        $return .= Html::img($this->src, $this->options);
         $return .= Html::endTag('picture');
 
         return $return;
