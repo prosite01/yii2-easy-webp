@@ -15,7 +15,7 @@ trait ConvertorTrait
     private static function createWebp($fileInfo, $webpFullPath)
     {
 		$extension = strtolower($fileInfo['extension']);
-        if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
             return null;
         }
 
@@ -29,6 +29,10 @@ trait ConvertorTrait
                     break;
                 case 'png':
                     $tmpImg = imagecreatefrompng($sourceImage);
+                    $alpha = true;
+                    break;
+                case 'gif':
+                    $tmpImg = imagecreatefromgif($sourceImage);
                     $alpha = true;
                     break;
             }

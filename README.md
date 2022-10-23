@@ -1,4 +1,4 @@
-JPG and PNG to WEBP converter
+JPG, PNG and GIF to WEBP converter
 =============================
 
 The converter allows one line to display the html tag `<picture>` containing the source file and webp
@@ -29,4 +29,10 @@ Once the extension is installed, simply use it in your code by  :
 
 ```php
 <?= \prosite\EasyWebp\Img::widget(['src' => '/img/portfolio/image.png', 'options' => ['alt' => 'Example Image']]); ?>
+```
+
+If you only want to get the path to the .webp file as a string, then use the following code:
+
+```php
+<?= \prosite\EasyWebp\Get::webp('/img/portfolio/image.png'); ?>
 ```
