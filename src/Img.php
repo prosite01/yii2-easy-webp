@@ -24,34 +24,34 @@ use yii\helpers\Html;
  */
 class Img extends \yii\base\Widget
 {
-	/**
-	 * @var string path (example: /img/portfolio/image.png)
-	 */
-	public $src;
+    /**
+     * @var string path (example: /img/portfolio/image.png)
+     */
+    public $src;
 
-	/**
-	 * @var string image options, class, width, alt and other (optional)
-	 */
-	public $options = [];
+    /**
+     * @var string image options, class, width, alt and other (optional)
+     */
+    public $options = [];
 
-	/**
-	 * @var array files path to return  
-	 */
-	private $_webp;
+    /**
+     * @var array files path to return  
+     */
+    private $_webp;
 
-	public function init()
-	{
-		parent::init();
+    public function init()
+    {
+        parent::init();
 
-		$this->_webp = Get::webp($this->src);
-	}
+        $this->_webp = Get::webp($this->src);
+    }
 
     public function run()
     {
         $return  = Html::beginTag('picture');
-		if (!empty($this->_webp)) {
+        if (!empty($this->_webp)) {
             $return .= Html::tag('source', [], ['srcset' => $this->_webp, 'type' => 'image/webp']);
-		}
+        }
         $return .= Html::img($this->src, $this->options);
         $return .= Html::endTag('picture');
 

@@ -14,7 +14,7 @@ trait ConvertorTrait
      */
     private static function createWebp($fileInfo, $webpFullPath)
     {
-		$extension = strtolower($fileInfo['extension']);
+        $extension = strtolower($fileInfo['extension']);
         if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
             return false;
         }

@@ -31,30 +31,30 @@ class Get
         if (is_file($imgFullPath) === false) {
             return null;
         }
-        
-		$fileSize = filesize($imgFullPath);
-		if ($fileSize === 0) {
-			return null;
-		}
 
-		$fileInfo = pathinfo($imgFullPath);
+        $fileSize = filesize($imgFullPath);
+        if ($fileSize === 0) {
+            return null;
+        }
+
+        $fileInfo = pathinfo($imgFullPath);
         $webpFileName = $fileInfo['filename'] . '.webp';
-		$webpFullPath = $fileInfo['dirname']  . '/' . $webpFileName;
+        $webpFullPath = $fileInfo['dirname']  . '/' . $webpFileName;
         if (file_exists($webpFullPath)) {
             return static::returnWebpPath($img);
         }
 
         if (!static::createWebp($fileInfo, $webpFullPath)) {
             return null;
-        }   
+        }
 
         if (filesize($webpFullPath) >= $fileSize) {
             return null;
         }
-        
+
         return static::returnWebpPath($img);
     }
-    
+
     /**
      * Return Webp path as string
      * @param  string $img path to original image file. Example: /img/portfolio/image.jpg
