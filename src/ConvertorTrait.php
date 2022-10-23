@@ -16,7 +16,7 @@ trait ConvertorTrait
     {
 		$extension = strtolower($fileInfo['extension']);
         if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-            return null;
+            return false;
         }
 
         $sourceImage = $fileInfo['dirname']  . '/' . $fileInfo['basename'];
@@ -45,7 +45,9 @@ trait ConvertorTrait
             imagedestroy($tmpImg);
         } catch (\Throwable $ex) {
             Yii::warning('An error occurred while converting the image: ' . $ex->getMessage());
-            return null;
+            return false;
         }
+
+        return true;
     }
 }
