@@ -16,9 +16,11 @@ use Yii;
  * 
  */
 class Get
-{    
+{
+    use ConvertorTrait;
+
     /**
-     * Generate and get path to the webp file
+     * Get path to the webp file
      * @param  string $img
      * @return string|null
      */
@@ -26,7 +28,7 @@ class Get
     {
         $imgFullPath = Yii::getAlias('@webroot') . $img;
 
-        if (file_exists($imgFullPath) === false) {
+        if (is_file($imgFullPath) === false) {
             return null;
         }
         
@@ -36,42 +38,28 @@ class Get
 		}
 
 		$fileInfo = pathinfo($imgFullPath);
-		$extension = strtolower($fileInfo['extension']);
-        if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
-            return null;
-        }
-
         $webpFileName = $fileInfo['filename'] . '.webp';
 		$webpFullPath = $fileInfo['dirname']  . '/' . $webpFileName;
         if (file_exists($webpFullPath)) {
             return static::returnWebpPath($img);
         }
 
-        $alpha = false;
-        switch ($extension) {
-            case 'jpg':
-            case 'jpeg':
-                $tmpImg = imagecreatefromjpeg($imgFullPath);
-                break;
-            case 'png':
-                $tmpImg = imagecreatefrompng($imgFullPath);
-                $alpha = true;
-                break;
-        }
-        if ($alpha) {
-            imagepalettetotruecolor($tmpImg);
-            imagealphablending($tmpImg, true);
-            imagesavealpha($tmpImg, true);
-        }
-        imagewebp($tmpImg, $webpFullPath, 80);
-        imagedestroy($tmpImg);
+        if (!static::createWebp($fileInfo, $webpFullPath)) {
+            return null;
+        }   
 
         if (filesize($webpFullPath) >= $fileSize) {
             return null;
         }
+        
         return static::returnWebpPath($img);
     }
-
+    
+    /**
+     * Return Webp path as string
+     * @param  string $img path to original image file. Example: /img/portfolio/image.jpg
+     * @return string /img/portfolio/image.webp
+     */
     private static function returnWebpPath($img)
     {
         $imgPath = pathinfo($img);
