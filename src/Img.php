@@ -30,7 +30,7 @@ class Img extends \yii\base\Widget
     public $src;
 
     /**
-     * @var string image options, class, width, alt and other (optional)
+     * @var array image options, class, width, alt and other (optional)
      */
     public $options = [];
 
@@ -50,7 +50,7 @@ class Img extends \yii\base\Widget
     {
         $return  = Html::beginTag('picture');
         if (!empty($this->_webp)) {
-            $return .= Html::tag('source', [], ['srcset' => $this->_webp, 'type' => 'image/webp']);
+            $return .= Html::tag('source', '', ['srcset' => $this->_webp, 'type' => 'image/webp']);
         }
         $return .= Html::img($this->src, $this->options);
         $return .= Html::endTag('picture');
