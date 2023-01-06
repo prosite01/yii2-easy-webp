@@ -27,42 +27,24 @@ class Get
     public static function webp($img)
     {
         $imgFullPath = Yii::getAlias('@webroot') . $img;
-
-        if (is_file($imgFullPath) === false) {
-            return null;
-        }
-
-        $fileSize = filesize($imgFullPath);
-        if ($fileSize === 0) {
-            return null;
-        }
-
         $fileInfo = pathinfo($imgFullPath);
         $webpFileName = $fileInfo['filename'] . '.webp';
         $webpFullPath = $fileInfo['dirname']  . '/' . $webpFileName;
+
+        if (!is_file($imgFullPath)) {
+            return null;
+        }
+
+        $originalFileSize = filesize($imgFullPath);
+
         if (file_exists($webpFullPath)) {
-            return static::returnWebpPath($img);
+            return (filesize($webpFullPath) < $originalFileSize) ? static::getWebpPath($img) : null;
         }
 
-        if (!static::createWebp($fileInfo, $webpFullPath)) {
+        if (!static::createWebp($fileInfo, $webpFullPath, $originalFileSize)) {
             return null;
         }
 
-        if (filesize($webpFullPath) >= $fileSize) {
-            return null;
-        }
-
-        return static::returnWebpPath($img);
-    }
-
-    /**
-     * Return Webp path as string
-     * @param  string $img path to original image file. Example: /img/portfolio/image.jpg
-     * @return string /img/portfolio/image.webp
-     */
-    private static function returnWebpPath($img)
-    {
-        $imgPath = pathinfo($img);
-        return $imgPath['dirname']  . '/' . $imgPath['filename'] . '.webp';
+        return static::getWebpPath($img);
     }
 }
